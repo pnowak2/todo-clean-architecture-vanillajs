@@ -17,7 +17,7 @@
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
-    "start": "webpack --watch"
+    "start": "webpack && live-server ./dist"
   },
   "repository": {
     "type": "git",
@@ -30,14 +30,15 @@
     "Architecture"
   ],
   "dependencies": {
-    "rxjs": "^6.5.3",
-    "@domisoft/todo-clean-architecture": "^1.0.0"
+    "@domisoft/todo-clean-architecture": "^1.0.0",
+    "rxjs": "^6.5.3"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^12.12.16",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.9.0",
+    "live-server": "^1.2.1",
     "prettier": "^1.19.1",
     "ts-jest": "^24.2.0",
     "ts-loader": "^6.2.1",
