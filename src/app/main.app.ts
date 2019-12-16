@@ -1,20 +1,20 @@
-import { TodoInMemoryRepository } from "@domisoft/todo-clean-architecture/lib/features/todo/data/repository/inmemory/todo.inmemory.repository";
-import { TodoRepository } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/repository/todo.repository";
-import { AddTodoUseCase } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/add-todo.usecase";
-import { GetAllTodosUseCase } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/get-all-todos.usecase";
-import { GetCompletedTodosUseCase } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/get-completed-todos.usecase";
-import { GetIncompletedTodosUseCase } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/get-incompleted-todos.usecase";
-import { MarkTodoAsCompletedUseCase } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/mark-todo-as-complete.usecase";
-import { MarkTodoAsIncompletedUseCase } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/mark-todo-as-incomplete.usecase";
-import { RemoveCompletedTodosUseCase } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/remove-completed-todos.usecas";
-import { RemoveTodoUseCase } from "@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/remove-todo-id.usecase";
-import { Todo } from "@domisoft/todo-clean-architecture/lib/features/todo/presentation/state/todos.state";
-import { TodoDefaultPresenter } from "@domisoft/todo-clean-architecture/lib/features/todo/presentation/todo-default.presenter";
-import { TodoPresenter } from "@domisoft/todo-clean-architecture/lib/features/todo/presentation/todo.presenter";
-import { Observable } from "rxjs";
+import { TodoInMemoryRepository } from '@domisoft/todo-clean-architecture/lib/features/todo/data/repository/inmemory/todo.inmemory.repository';
+import { TodoRepository } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/repository/todo.repository';
+import { AddTodoUseCase } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/add-todo.usecase';
+import { GetAllTodosUseCase } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/get-all-todos.usecase';
+import { GetCompletedTodosUseCase } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/get-completed-todos.usecase';
+import { GetIncompletedTodosUseCase } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/get-incompleted-todos.usecase';
+import { MarkTodoAsCompletedUseCase } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/mark-todo-as-complete.usecase';
+import { MarkTodoAsIncompletedUseCase } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/mark-todo-as-incomplete.usecase';
+import { RemoveCompletedTodosUseCase } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/remove-completed-todos.usecas';
+import { RemoveTodoUseCase } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/usecase/remove-todo-id.usecase';
+import { TodoVM } from '@domisoft/todo-clean-architecture/lib/features/todo/presentation/state/todos.state';
+import { TodoDefaultPresenter } from '@domisoft/todo-clean-architecture/lib/features/todo/presentation/todo-default.presenter';
+import { TodoPresenter } from '@domisoft/todo-clean-architecture/lib/features/todo/presentation/todo.presenter';
+import { Observable } from 'rxjs';
 
 export class VanillaJsApp {
-  private todos$: Observable<Todo[]>;
+  private todos$: Observable<TodoVM[]>;
   private todosCount$: Observable<number>;
   private incompletedTodosCount$: Observable<number>;
 
@@ -64,31 +64,31 @@ export class VanillaJsApp {
 
     // Presenter reactive subscriptions
     this.todos$.subscribe(todos => {
-      const todosEl = document.querySelector("#todos");
-      todosEl.innerHTML = "";
+      const todosEl = document.querySelector('#todos');
+      todosEl.innerHTML = '';
 
       todos.forEach(todo => {
-        const liEl = document.createElement("li");
+        const liEl = document.createElement('li');
         liEl.addEventListener(
-          "click",
+          'click',
           this.handleItemClick.bind({
             self: this,
             todo
           })
         );
 
-        const checkboxEl = document.createElement("input");
-        checkboxEl.type = "checkbox";
-        checkboxEl.dataset.type = "checkbox";
+        const checkboxEl = document.createElement('input');
+        checkboxEl.type = 'checkbox';
+        checkboxEl.dataset.type = 'checkbox';
         checkboxEl.checked = todo.completed;
 
-        const inputEl = document.createElement("input");
-        inputEl.dataset.type = "input";
+        const inputEl = document.createElement('input');
+        inputEl.dataset.type = 'input';
         inputEl.value = todo.name;
 
-        const removeEl = document.createElement("button");
-        removeEl.dataset.type = "button";
-        removeEl.textContent = "x";
+        const removeEl = document.createElement('button');
+        removeEl.dataset.type = 'button';
+        removeEl.textContent = 'x';
 
         liEl.appendChild(checkboxEl);
         liEl.appendChild(inputEl);
@@ -99,13 +99,13 @@ export class VanillaJsApp {
     });
 
     this.todosCount$.subscribe(todosCount => {
-      const todosCountEl = document.querySelector("#todosCount");
-      todosCountEl.textContent = todosCount + "";
+      const todosCountEl = document.querySelector('#todosCount');
+      todosCountEl.textContent = todosCount + '';
     });
 
     this.incompletedTodosCount$.subscribe(todosCount => {
-      const todosCountEl = document.querySelector("#incompletedTodosCount");
-      todosCountEl.textContent = todosCount + "";
+      const todosCountEl = document.querySelector('#incompletedTodosCount');
+      todosCountEl.textContent = todosCount + '';
     });
   }
 
@@ -114,41 +114,41 @@ export class VanillaJsApp {
 
     this.todoPresenter.getAllTodos();
 
-    document.querySelector("#getAllTodos").addEventListener("click", () => {
+    document.querySelector('#getAllTodos').addEventListener('click', () => {
       this.todoPresenter.getAllTodos();
     });
 
     document
-      .querySelector("#getCompletedTodos")
-      .addEventListener("click", () => {
+      .querySelector('#getCompletedTodos')
+      .addEventListener('click', () => {
         this.todoPresenter.getCompletedTodos();
       });
 
     document
-      .querySelector("#getIncompletedTodos")
-      .addEventListener("click", () => {
+      .querySelector('#getIncompletedTodos')
+      .addEventListener('click', () => {
         this.todoPresenter.getIncompletedTodos();
       });
 
     document
-      .querySelector("#removeCompletedTodos")
-      .addEventListener("click", () => {
+      .querySelector('#removeCompletedTodos')
+      .addEventListener('click', () => {
         this.todoPresenter.removeCompletedTodos();
       });
 
-    document.querySelector("#addTodo").addEventListener("click", () => {
+    document.querySelector('#addTodo').addEventListener('click', () => {
       const inputEl = document.querySelector(
-        "#addTodoInput"
+        '#addTodoInput'
       ) as HTMLInputElement;
       this.todoPresenter.addTodo(inputEl.value);
 
-      inputEl.value = "";
+      inputEl.value = '';
     });
   }
 
   private handleItemClick(this: any, evt: MouseEvent) {
     const targetEl: HTMLElement = evt.target as HTMLElement;
-    if (targetEl.dataset.type === "checkbox") {
+    if (targetEl.dataset.type === 'checkbox') {
       const inputEl: HTMLInputElement = targetEl as HTMLInputElement;
       if (inputEl.checked) {
         this.self.todoPresenter.markTodoAsCompleted(this.todo.id);
@@ -157,11 +157,11 @@ export class VanillaJsApp {
       }
     }
 
-    if (targetEl.dataset.type === "input") {
+    if (targetEl.dataset.type === 'input') {
       const inputEl: HTMLInputElement = targetEl as HTMLInputElement;
     }
 
-    if (targetEl.dataset.type === "button") {
+    if (targetEl.dataset.type === 'button') {
       this.self.todoPresenter.removeTodo(this.todo.id);
     }
   }

@@ -1,6 +1,6 @@
 {
   "name": "@domisoft/todo-clean-architecture-vanillajs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Clean Architecture Concepts Applied",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
