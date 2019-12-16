@@ -18,7 +18,7 @@ export class VanillaJsApp {
   private todosCount$: Observable<number>;
   private incompletedTodosCount$: Observable<number>;
 
-  private todoPresenter: TodoPresenter;
+  private todoApp: TodoPresenter;
 
   constructor() {
     // Dependency injection configuration
@@ -46,7 +46,7 @@ export class VanillaJsApp {
       inMemoryTodoRepo
     );
 
-    this.todoPresenter = new TodoDefaultPresenter(
+    this.todoApp = new TodoDefaultPresenter(
       getAllTodosUC,
       getCompletedTodosUC,
       getIncompletedTodosUC,
@@ -58,9 +58,9 @@ export class VanillaJsApp {
     );
 
     // View observables binding
-    this.todos$ = this.todoPresenter.todos$;
-    this.todosCount$ = this.todoPresenter.todosCount$;
-    this.incompletedTodosCount$ = this.todoPresenter.incompletedTodosCount$;
+    this.todos$ = this.todoApp.todos$;
+    this.todosCount$ = this.todoApp.todosCount$;
+    this.incompletedTodosCount$ = this.todoApp.incompletedTodosCount$;
 
     // Presenter reactive subscriptions
     this.todos$.subscribe(todos => {
@@ -112,35 +112,35 @@ export class VanillaJsApp {
   public run() {
     // UI Events/Code
 
-    this.todoPresenter.getAllTodos();
+    this.todoApp.getAllTodos();
 
     document.querySelector('#getAllTodos').addEventListener('click', () => {
-      this.todoPresenter.getAllTodos();
+      this.todoApp.getAllTodos();
     });
 
     document
       .querySelector('#getCompletedTodos')
       .addEventListener('click', () => {
-        this.todoPresenter.getCompletedTodos();
+        this.todoApp.getCompletedTodos();
       });
 
     document
       .querySelector('#getIncompletedTodos')
       .addEventListener('click', () => {
-        this.todoPresenter.getIncompletedTodos();
+        this.todoApp.getIncompletedTodos();
       });
 
     document
       .querySelector('#removeCompletedTodos')
       .addEventListener('click', () => {
-        this.todoPresenter.removeCompletedTodos();
+        this.todoApp.removeCompletedTodos();
       });
 
     document.querySelector('#addTodo').addEventListener('click', () => {
       const inputEl = document.querySelector(
         '#addTodoInput'
       ) as HTMLInputElement;
-      this.todoPresenter.addTodo(inputEl.value);
+      this.todoApp.addTodo(inputEl.value);
 
       inputEl.value = '';
     });
@@ -151,9 +151,9 @@ export class VanillaJsApp {
     if (targetEl.dataset.type === 'checkbox') {
       const inputEl: HTMLInputElement = targetEl as HTMLInputElement;
       if (inputEl.checked) {
-        this.self.todoPresenter.markTodoAsCompleted(this.todo.id);
+        this.self.todoApp.markTodoAsCompleted(this.todo.id);
       } else {
-        this.self.todoPresenter.markTodoAsIncompleted(this.todo.id);
+        this.self.todoApp.markTodoAsIncompleted(this.todo.id);
       }
     }
 
@@ -162,7 +162,7 @@ export class VanillaJsApp {
     }
 
     if (targetEl.dataset.type === 'button') {
-      this.self.todoPresenter.removeTodo(this.todo.id);
+      this.self.todoApp.removeTodo(this.todo.id);
     }
   }
 }
