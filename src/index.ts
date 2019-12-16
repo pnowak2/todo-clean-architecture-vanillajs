@@ -1,3 +1,3 @@
-import { VanillaJsApp } from "./app/main.app";
+import { VanillaJsApp } from './app/main.app';
 
 new VanillaJsApp().run();
