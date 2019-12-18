@@ -31,9 +31,9 @@
   ],
   "dependencies": {
     "@domisoft/todo-clean-architecture": "^1.0.0",
+    "rxjs": "^6.5.3",
     "todomvc-app-css": "^2.0.0",
-    "todomvc-common": "^1.0.0",
-    "rxjs": "^6.5.3"
+    "todomvc-common": "^1.0.0"
   },
   "devDependencies": {
     "@types/jest": "^24.0.23",
@@ -51,6 +51,6 @@
     "typescript": "^3.7.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-serve": "^3.2.0"
+    "webpack-serve": "3.1"
   }
 }
