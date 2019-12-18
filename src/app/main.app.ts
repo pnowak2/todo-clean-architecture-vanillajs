@@ -14,6 +14,7 @@ import { TodoPresenter } from '@domisoft/todo-clean-architecture/lib/features/to
 import { Observable } from 'rxjs';
 import 'todomvc-app-css/index.css';
 import 'todomvc-common/base.css';
+import '../assets/styles.css';
 
 export class VanillaJsApp {
   private todos$: Observable<TodoVM[]>;
