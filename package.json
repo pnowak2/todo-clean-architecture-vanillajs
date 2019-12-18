@@ -17,7 +17,7 @@
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
-    "start": "webpack && live-server ./dist"
+    "start": "webpack-serve --config webpack.config.js --static ./dist --host localhost --open"
   },
   "repository": {
     "type": "git",
@@ -46,6 +46,7 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.3",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "webpack-serve": "^3.2.0"
   }
 }

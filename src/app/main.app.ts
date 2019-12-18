@@ -15,104 +15,26 @@ import { Observable } from 'rxjs';
 
 export class VanillaJsApp {
   private todos$: Observable<TodoVM[]>;
-  private todosCount$: Observable<number>;
   private incompletedTodosCount$: Observable<number>;
 
   private todoApp: TodoPresenter;
 
   constructor() {
     // Dependency injection configuration
-    const inMemoryTodoRepo: TodoRepository = new TodoInMemoryRepository();
-    const getAllTodosUC: GetAllTodosUseCase = new GetAllTodosUseCase(
-      inMemoryTodoRepo
-    );
-    const getCompletedTodosUC: GetCompletedTodosUseCase = new GetCompletedTodosUseCase(
-      inMemoryTodoRepo
-    );
-    const getIncompletedTodosUC: GetIncompletedTodosUseCase = new GetIncompletedTodosUseCase(
-      inMemoryTodoRepo
-    );
-    const addTodoUC: AddTodoUseCase = new AddTodoUseCase(inMemoryTodoRepo);
-    const markTodoAsCompletedUC: MarkTodoAsCompletedUseCase = new MarkTodoAsCompletedUseCase(
-      inMemoryTodoRepo
-    );
-    const markTodoAsIncompletedUC: MarkTodoAsIncompletedUseCase = new MarkTodoAsIncompletedUseCase(
-      inMemoryTodoRepo
-    );
-    const removeTodoUC: RemoveTodoUseCase = new RemoveTodoUseCase(
-      inMemoryTodoRepo
-    );
-    const removeCompletedTodosUC: RemoveCompletedTodosUseCase = new RemoveCompletedTodosUseCase(
-      inMemoryTodoRepo
-    );
-
-    this.todoApp = new TodoDefaultPresenter(
-      getAllTodosUC,
-      getCompletedTodosUC,
-      getIncompletedTodosUC,
-      addTodoUC,
-      markTodoAsCompletedUC,
-      markTodoAsIncompletedUC,
-      removeTodoUC,
-      removeCompletedTodosUC
-    );
+    this.todoApp = this.createApp();
 
     // View observables binding
     this.todos$ = this.todoApp.todos$;
-    this.todosCount$ = this.todoApp.todosCount$;
     this.incompletedTodosCount$ = this.todoApp.incompletedTodosCount$;
 
     // Presenter reactive subscriptions
     this.todos$.subscribe(todos => {
-      const todosEl = document.querySelector('#todos');
-      todosEl.innerHTML = '';
-
-      todos.forEach(todo => {
-        const liEl = document.createElement('li');
-        liEl.addEventListener(
-          'click',
-          this.handleItemClick.bind({
-            self: this,
-            todo
-          })
-        );
-
-        const checkboxEl = document.createElement('input');
-        checkboxEl.type = 'checkbox';
-        checkboxEl.dataset.type = 'checkbox';
-        checkboxEl.checked = todo.completed;
-
-        const inputEl = document.createElement('input');
-        inputEl.dataset.type = 'input';
-        inputEl.value = todo.name;
-
-        const removeEl = document.createElement('button');
-        removeEl.dataset.type = 'button';
-        removeEl.textContent = 'x';
-
-        liEl.appendChild(checkboxEl);
-        liEl.appendChild(inputEl);
-        liEl.appendChild(removeEl);
-
-        todosEl.appendChild(liEl);
-      });
-    });
-
-    this.todosCount$.subscribe(todosCount => {
-      const todosCountEl = document.querySelector('#todosCount');
-      todosCountEl.textContent = todosCount + '';
+      this.handleTodosUpdate(todos);
     });
 
     this.incompletedTodosCount$.subscribe(todosCount => {
-      const todosCountEl = document.querySelector('#incompletedTodosCount');
-      todosCountEl.textContent = todosCount + '';
+      this.handleIncompleteTodosCountUpdate(todosCount);
     });
-  }
-
-  public run() {
-    // UI Events/Code
-
-    this.todoApp.getAllTodos();
 
     document.querySelector('#getAllTodos').addEventListener('click', () => {
       this.todoApp.getAllTodos();
@@ -136,29 +58,102 @@ export class VanillaJsApp {
         this.todoApp.removeCompletedTodos();
       });
 
-    document.querySelector('#addTodo').addEventListener('click', () => {
-      const inputEl = document.querySelector(
-        '#addTodoInput'
-      ) as HTMLInputElement;
-      this.todoApp.addTodo(inputEl.value);
+    document.querySelector('#addTodo')
+      .addEventListener('click', () => {
+        const inputEl = document.querySelector('#addTodoInput') as HTMLInputElement;
+        this.todoApp.addTodo(inputEl.value);
 
-      inputEl.value = '';
+        inputEl.value = '';
+      });
+  }
+
+  public run() {
+    this.todoApp.getAllTodos();
+  }
+
+  private createApp(): TodoPresenter {
+    const inMemoryTodoRepo: TodoRepository = new TodoInMemoryRepository();
+    const getAllTodosUC: GetAllTodosUseCase = new GetAllTodosUseCase(inMemoryTodoRepo);
+    const getCompletedTodosUC: GetCompletedTodosUseCase = new GetCompletedTodosUseCase(inMemoryTodoRepo);
+    const getIncompletedTodosUC: GetIncompletedTodosUseCase = new GetIncompletedTodosUseCase(inMemoryTodoRepo);
+    const addTodoUC: AddTodoUseCase = new AddTodoUseCase(inMemoryTodoRepo);
+    const markTodoAsCompletedUC: MarkTodoAsCompletedUseCase = new MarkTodoAsCompletedUseCase(inMemoryTodoRepo);
+    const markTodoAsIncompletedUC: MarkTodoAsIncompletedUseCase = new MarkTodoAsIncompletedUseCase(inMemoryTodoRepo);
+    const removeTodoUC: RemoveTodoUseCase = new RemoveTodoUseCase(inMemoryTodoRepo);
+    const removeCompletedTodosUC: RemoveCompletedTodosUseCase = new RemoveCompletedTodosUseCase(inMemoryTodoRepo);
+    return new TodoDefaultPresenter(getAllTodosUC, getCompletedTodosUC, getIncompletedTodosUC, addTodoUC, markTodoAsCompletedUC, markTodoAsIncompletedUC, removeTodoUC, removeCompletedTodosUC);
+  }
+
+  private handleIncompleteTodosCountUpdate(todosCount: number) {
+    const todosCountEl = document.querySelector('#incompletedTodosCount');
+    todosCountEl.textContent = todosCount + '';
+  }
+
+  private handleTodosUpdate(todos: TodoVM[]) {
+    const todosEl = document.querySelector('#todos');
+    todosEl.innerHTML = '';
+    todos.forEach(todo => {
+      const liEl = this.createListElement(todo);
+      const itemViewEl = this.createItemViewElement(todo);
+      const checkboxEl = this.createCheckboxElement(todo);
+      const inputEl = this.createInputElement(todo);
+      const removeEl = this.createButtonElement();
+
+      itemViewEl.appendChild(checkboxEl);
+      itemViewEl.appendChild(inputEl);
+      itemViewEl.appendChild(removeEl);
+
+      liEl.appendChild(itemViewEl);
+
+      todosEl.appendChild(liEl);
     });
   }
 
+  private createItemViewElement(todo: TodoVM) {
+    const viewEl = document.createElement('div');
+    viewEl.className = 'todo-view';
+    viewEl.addEventListener('click', this.handleItemClick.bind({
+      self: this,
+      todo
+    }));
+    return viewEl;
+  }
+
+  private createListElement(todo: TodoVM) {
+    const liEl = document.createElement('li');
+    return liEl;
+  }
+  private createButtonElement() {
+    const removeEl = document.createElement('button');
+    removeEl.dataset.type = 'button';
+    removeEl.textContent = 'x';
+    return removeEl;
+  }
+
+  private createInputElement(todo: TodoVM) {
+    const inputEl = document.createElement('input');
+    inputEl.dataset.type = 'input';
+    inputEl.value = todo.name;
+    return inputEl;
+  }
+
+  private createCheckboxElement(todo: TodoVM) {
+    const checkboxEl = document.createElement('input');
+    checkboxEl.type = 'checkbox';
+    checkboxEl.dataset.type = 'checkbox';
+    checkboxEl.checked = todo.completed;
+    return checkboxEl;
+  }
   private handleItemClick(this: any, evt: MouseEvent) {
     const targetEl: HTMLElement = evt.target as HTMLElement;
     if (targetEl.dataset.type === 'checkbox') {
       const inputEl: HTMLInputElement = targetEl as HTMLInputElement;
+
       if (inputEl.checked) {
         this.self.todoApp.markTodoAsCompleted(this.todo.id);
       } else {
         this.self.todoApp.markTodoAsIncompleted(this.todo.id);
       }
-    }
-
-    if (targetEl.dataset.type === 'input') {
-      const inputEl: HTMLInputElement = targetEl as HTMLInputElement;
     }
 
     if (targetEl.dataset.type === 'button') {
