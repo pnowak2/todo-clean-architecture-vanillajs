@@ -38,35 +38,36 @@ export class VanillaJsApp {
       this.handleIncompleteTodosCountUpdate(todosCount);
     });
 
-    document.querySelector('#getAllTodos').addEventListener('click', () => {
+    document.querySelector('#getAllTodos').addEventListener('click', (evt: MouseEvent) => {
       this.todoApp.getAllTodos();
+      evt.preventDefault();
     });
 
     document
-      .querySelector('#getCompletedTodos')
-      .addEventListener('click', () => {
+      .querySelector('#getCompletedTodos').addEventListener('click', (evt: MouseEvent) => {
         this.todoApp.getCompletedTodos();
+        evt.preventDefault();
       });
 
     document
-      .querySelector('#getIncompletedTodos')
-      .addEventListener('click', () => {
+      .querySelector('#getIncompletedTodos').addEventListener('click', (evt: MouseEvent) => {
         this.todoApp.getIncompletedTodos();
+        evt.preventDefault();
       });
 
     document
-      .querySelector('#removeCompletedTodos')
-      .addEventListener('click', () => {
+      .querySelector('#removeCompletedTodos').addEventListener('click', (evt: MouseEvent) => {
         this.todoApp.removeCompletedTodos();
+        evt.preventDefault();
       });
 
-    document.querySelector('#addTodo')
-      .addEventListener('click', () => {
-        const inputEl = document.querySelector('#addTodoInput') as HTMLInputElement;
-        this.todoApp.addTodo(inputEl.value);
+    // document.querySelector('#addTodo')
+    //   .addEventListener('click', () => {
+    //     const inputEl = document.querySelector('#addTodoInput') as HTMLInputElement;
+    //     this.todoApp.addTodo(inputEl.value);
 
-        inputEl.value = '';
-      });
+    //     inputEl.value = '';
+    //   });
   }
 
   public run() {
@@ -112,13 +113,13 @@ export class VanillaJsApp {
   }
 
   private createItemViewElement(todo: TodoVM) {
-    const viewEl = document.createElement('div');
-    viewEl.className = 'todo-view';
-    viewEl.addEventListener('click', this.handleItemClick.bind({
+    const el = document.createElement('div');
+    el.className = 'view';
+    el.addEventListener('click', this.handleItemClick.bind({
       self: this,
       todo
     }));
-    return viewEl;
+    return el;
   }
 
   private createListElement(todo: TodoVM) {
@@ -126,25 +127,25 @@ export class VanillaJsApp {
     return liEl;
   }
   private createButtonElement() {
-    const removeEl = document.createElement('button');
-    removeEl.dataset.type = 'button';
-    removeEl.textContent = 'x';
-    return removeEl;
+    const el = document.createElement('button');
+    el.className = 'destroy';
+    el.dataset.type = 'button';
+    return el;
   }
 
   private createInputElement(todo: TodoVM) {
-    const inputEl = document.createElement('input');
-    inputEl.dataset.type = 'input';
-    inputEl.value = todo.name;
-    return inputEl;
+    const el = document.createElement('label');
+    el.textContent = todo.name;
+    return el;
   }
 
   private createCheckboxElement(todo: TodoVM) {
-    const checkboxEl = document.createElement('input');
-    checkboxEl.type = 'checkbox';
-    checkboxEl.dataset.type = 'checkbox';
-    checkboxEl.checked = todo.completed;
-    return checkboxEl;
+    const el = document.createElement('input');
+    el.className = 'toggle';
+    el.type = 'checkbox';
+    el.dataset.type = 'checkbox';
+    el.checked = todo.completed;
+    return el;
   }
   private handleItemClick(this: any, evt: MouseEvent) {
     const targetEl: HTMLElement = evt.target as HTMLElement;

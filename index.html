@@ -6,15 +6,30 @@
   </head>
 
   <body>
-    <h1>Todos <span id="incompletedTodosCount"></span> items left</h1>
 
-    <input type="text" id="addTodoInput" placeholder="Add todo..">
-    <button id="addTodo">Add todo</button>
-    <button id="getAllTodos">All</button>
-    <button id="getCompletedTodos">Completed</button>
-    <button id="getIncompletedTodos">Incompleted</button>
-    <button id="removeCompletedTodos">Clear completed</button>
+    <section class="todoapp">
+      <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo" type="text" id="addTodoInput" placeholder="What needs to be done?">
+        <input class="toggle-all" id="toggle-all" type="checkbox">
+        <label for="toggle-all"> Mark all as complete </label>
+      </header>
 
-    <ul id="todos"></ul>
+      <ul id="todos" class="todo-list"></ul>
+
+      <footer class="footer">
+        <span class="todo-count">
+          <strong id="incompletedTodosCount"></strong> item(s) left
+        </span>
+
+        <ul class="filters">
+          <li><a href id="getAllTodos">All</a></li>
+          <li><a href id="getIncompletedTodos">Active</a></li>
+          <li><a href id="getCompletedTodos">Completed</a></li>
+        </ul>
+
+        <button id="removeCompletedTodos" class="clear-completed">Clear completed</button>
+      </footer>
+    </section>
   </body>
 </html>
