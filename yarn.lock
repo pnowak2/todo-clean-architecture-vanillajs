@@ -147,9 +147,9 @@
     minimist "^1.2.0"
 
 "@domisoft/todo-clean-architecture@^1.0.0":
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/@domisoft/todo-clean-architecture/-/todo-clean-architecture-1.0.8.tgz#511bceee4bf044e7dc25d236ef2dffb780bbdcb3"
-  integrity sha512-OZhTuUD09N+z3YYCir5kkf5PngjTR97GmpZl+W46sl//odqHhDsIc/laPUrS8iMIwIkyrVW7osrcqXNiiYyCFA==
+  version "1.0.11"
+  resolved "https://registry.yarnpkg.com/@domisoft/todo-clean-architecture/-/todo-clean-architecture-1.0.11.tgz#283cdb9cf70adc17773ee59fb00a9e7d88d91868"
+  integrity sha512-1HnSvfYzjL+uTZoCzwzi4t/9Rb8BmKM/TKzMoELzzW/f7RHYPuOa3H9rmgROIz9EEXJZsXGmg/Q1sF/rGUbdnA==
   dependencies:
     rxjs "^6.5.3"
 
@@ -2839,9 +2839,9 @@ is-buffer@^1.1.5:
   integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
 
 is-callable@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/is-callable/-/is-callable-1.1.4.tgz#1e1adf219e1eeb684d691f9d6a05ff0d30a24d75"
-  integrity sha512-r5p9sxJjYnArLjObpjA4xu5EKI3CuKHkJXMhT7kwbpUyIFD1n5PMAsoPvWnvtZiNz7LjkYDRZhd7FlI0eMijEA==
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/is-callable/-/is-callable-1.1.5.tgz#f7e46b596890456db74e7f6e976cb3273d06faab"
+  integrity sha512-ESKv5sMCJB2jnHTWZ3O5itG+O128Hsus4K4Qh1h2/cgn2vbgnLSVqfV46AeJA9D5EeeLa9w81KUXMtn34zhX+Q==
 
 is-ci@^2.0.0:
   version "2.0.0"

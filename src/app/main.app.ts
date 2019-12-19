@@ -1,10 +1,4 @@
-import {
-  TodoInMemoryRepository
-} from '@domisoft/todo-clean-architecture/lib/features/todo/data/repository/inmemory/todo.inmemory.repository';
-import { TodoRepository } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/repository/todo.repository';
-import { TodoDefaultPresenter } from '@domisoft/todo-clean-architecture/lib/features/todo/presentation/presenter/todo-default.presenter';
-import { TodoPresenter } from '@domisoft/todo-clean-architecture/lib/features/todo/presentation/presenter/todo.presenter';
-import { TodoVM } from '@domisoft/todo-clean-architecture/lib/features/todo/presentation/state/todos.state';
+import { TodoDefaultPresenter, TodoInMemoryRepository, TodoPresenter, TodoRepository, TodoVM } from '@domisoft/todo-clean-architecture';
 import { Observable } from 'rxjs';
 import 'todomvc-app-css/index.css';
 import 'todomvc-common/base.css';
