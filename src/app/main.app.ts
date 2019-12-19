@@ -1,5 +1,5 @@
 import {
-    TodoInMemoryRepository
+  TodoInMemoryRepository
 } from '@domisoft/todo-clean-architecture/lib/features/todo/data/repository/inmemory/todo.inmemory.repository';
 import { TodoRepository } from '@domisoft/todo-clean-architecture/lib/features/todo/domain/repository/todo.repository';
 import { TodoDefaultPresenter } from '@domisoft/todo-clean-architecture/lib/features/todo/presentation/presenter/todo-default.presenter';
@@ -13,6 +13,7 @@ import '../assets/styles.css';
 export class VanillaJsApp {
   private todos$: Observable<TodoVM[]>;
   private activeTodosCount$: Observable<number>;
+  private filter$: Observable<string>;
 
   private todoApp: TodoPresenter;
 
@@ -20,6 +21,7 @@ export class VanillaJsApp {
     this.todoApp = this.createApp();
     this.todos$ = this.todoApp.todos$;
     this.activeTodosCount$ = this.todoApp.activeTodosCount$;
+    this.filter$ = this.todoApp.filter$;
 
     this.todos$.subscribe(todos => {
       this.handleTodosUpdate(todos);
@@ -27,6 +29,10 @@ export class VanillaJsApp {
 
     this.activeTodosCount$.subscribe(todosCount => {
       this.handleActiveTodosCountUpdate(todosCount);
+    });
+
+    this.filter$.subscribe(filter => {
+      this.handleFilterUpdate(filter);
     });
 
     document.querySelector('#getAllTodos').addEventListener('click', (evt: MouseEvent) => {
@@ -52,11 +58,21 @@ export class VanillaJsApp {
         evt.preventDefault();
       });
 
+    document
+      .querySelector('#toggle-all').addEventListener('click', (evt: MouseEvent) => {
+        const el = evt.target as HTMLInputElement;
+        if(el.checked) {
+          this.todoApp.markAllTodosAsCompleted();
+        } else {
+          this.todoApp.markAllTodosAsActive();
+        }
+      });
+
     document.querySelector('#addTodoInput')
       .addEventListener('keyup', (evt: KeyboardEvent) => {
-        if(evt.key === 'Enter') {
+        if (evt.key === 'Enter') {
           const el = evt.target as HTMLInputElement;
-          if(el.value.trim() !== '') {
+          if (el.value.trim() !== '') {
             this.todoApp.addTodo(el.value);
             el.value = '';
           }
@@ -102,6 +118,26 @@ export class VanillaJsApp {
     });
   }
 
+  handleFilterUpdate(filter: string) {
+    const allEl = document.querySelector('#getAllTodos');
+    const activeEl = document.querySelector('#getActiveTodos');
+    const completedEl = document.querySelector('#getCompletedTodos');
+
+    [allEl, activeEl, completedEl].forEach(el => {
+      el.className = '';
+    })
+    
+    if(filter === 'active') {
+      activeEl.className = 'selected';
+    }
+    if(filter === 'completed') {
+      completedEl.className = 'selected';
+    }
+    if(filter === 'all') {
+      allEl.className = 'selected';
+    }
+  }
+
   private createItemViewElement(todo: TodoVM) {
     const el = document.createElement('div');
     el.className = 'view';
@@ -136,9 +172,9 @@ export class VanillaJsApp {
     el.className = 'toggle';
     el.type = 'checkbox';
     el.checked = todo.completed;
-    
+
     el.addEventListener('change', (evt: MouseEvent) => {
-      if(el.checked) {
+      if (el.checked) {
         this.todoApp.markTodoAsCompleted(todo.id);
       } else {
         this.todoApp.markTodoAsActive(todo.id);
