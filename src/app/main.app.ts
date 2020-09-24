@@ -1,4 +1,10 @@
-import { TodoDefaultPresenter, TodoInMemoryRepository, TodoPresenter, TodoRepository, TodoVM } from '@domisoft/todo-clean-architecture';
+import { 
+  TodoDefaultPresenter, 
+  TodoInMemoryRepository, 
+  TodoPresenter, 
+  TodoRepository, 
+  TodoVM 
+} from '@domisoft/todo-clean-architecture';
 import { Observable } from 'rxjs';
 import 'todomvc-app-css/index.css';
 import 'todomvc-common/base.css';
